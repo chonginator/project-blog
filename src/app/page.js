@@ -25,6 +25,7 @@ async function BlogPostList() {
   }) => (
     <BlogSummaryCard 
       key={slug}
+      slug={slug}
       {...delegated}
     />
   ))
