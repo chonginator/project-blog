@@ -31,7 +31,6 @@ export const metadata = {
 }
 
 function RootLayout({ children }) {
-  // TODO: Dynamic theme depending on user preference
   const theme = 'light';
 
   return (
