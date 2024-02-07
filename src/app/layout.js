@@ -7,6 +7,7 @@ import clsx from 'clsx';
 
 import { LIGHT_TOKENS, DARK_TOKENS, BLOG_TITLE } from '@/constants';
 
+import RespectMotionPreferences from '@/components/RespectMotionPreferences';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import './styles.css';
@@ -41,9 +42,11 @@ function RootLayout({ children }) {
       style={theme === 'light' ? LIGHT_TOKENS : DARK_TOKENS}
     >
       <body>
-        <Header theme={theme} />
-        <main>{children}</main>
-        <Footer />
+        <RespectMotionPreferences>
+          <Header theme={theme} />
+          <main>{children}</main>
+          <Footer />
+        </RespectMotionPreferences>
       </body>
     </html>
   );
