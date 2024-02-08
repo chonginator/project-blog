@@ -1,4 +1,6 @@
+'use client';
 import React from 'react';
+import { motion } from 'framer-motion';
 import clsx from 'clsx';
 import {
   Play,
@@ -18,12 +20,31 @@ const COLORS = [
 ];
 
 function CircularColorsDemo() {
-  // TODO: This value should increase by 1 every second:
-  const timeElapsed = 0;
+  const selectedColorOutlineId = React.useId();
+  const [timeElapsed, setTimeElapsed] = React.useState(0);
+  const [isTimerRunning, setIsTimerRunning] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!isTimerRunning) {
+      return;
+    }
+
+    const id = setInterval(() => {
+      setTimeElapsed(currentTimeElapsed => currentTimeElapsed + 1);
+    }, 1000)
+
+    return () => clearInterval(id);
+  }, [isTimerRunning])
 
   // TODO: This value should cycle through the colors in the
   // COLORS array:
-  const selectedColor = COLORS[0];
+  const colourId = timeElapsed % COLORS.length;
+  const selectedColor = COLORS[colourId];
+
+  function handleReset() {
+    setIsTimerRunning(false);
+    setTimeElapsed(0);
+  }
 
   return (
     <Card as="section" className={styles.wrapper}>
@@ -38,7 +59,8 @@ function CircularColorsDemo() {
               key={index}
             >
               {isSelected && (
-                <div
+                <motion.div
+                  layoutId={`${selectedColorOutlineId}-outline`}
                   className={
                     styles.selectedColorOutline
                   }
@@ -69,14 +91,21 @@ function CircularColorsDemo() {
           <dd>{timeElapsed}</dd>
         </dl>
         <div className={styles.actions}>
-          <button>
-            <Play />
-            <VisuallyHidden>Play</VisuallyHidden>
-          </button>
-          <button>
-            <RotateCcw />
-            <VisuallyHidden>Reset</VisuallyHidden>
-          </button>
+          {isTimerRunning ? 
+            <button onClick={() => setIsTimerRunning(false)}>
+              <Pause />
+              <VisuallyHidden>Pause</VisuallyHidden>
+            </button>
+          : 
+            <button onClick={() => setIsTimerRunning(true)}>
+              <Play />
+              <VisuallyHidden>Play</VisuallyHidden>
+            </button>
+          }
+            <button onClick={handleReset}>
+              <RotateCcw />
+              <VisuallyHidden>Reset</VisuallyHidden>
+            </button>
         </div>
       </div>
     </Card>
