@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import React from 'react';
 import {
   Work_Sans,
@@ -31,7 +32,8 @@ export const metadata = {
 }
 
 function RootLayout({ children }) {
-  const theme = 'light';
+  const savedTheme = cookies().get('colour-theme');
+  const theme = savedTheme?.value || 'light';
 
   return (
     <html
@@ -42,7 +44,7 @@ function RootLayout({ children }) {
     >
       <body>
         <RespectMotionPreferences>
-          <Header theme={theme} />
+          <Header initialTheme={theme} />
           <main>{children}</main>
           <Footer />
         </RespectMotionPreferences>
